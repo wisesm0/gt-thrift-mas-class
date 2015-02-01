@@ -4,12 +4,12 @@
 		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 		<script type="text/javascript" src="angular.min.js"></script>
 		<script type="text/javascript" src="app.js"></script> 
+		awe rad
 		<p>{{"hello" + " you"}}</p> <!-- now part of the angular application -->
 	</head>
 	<body ng-controller="StoreController as store"> <!-- 'as' is a keyword to specify an alias like "store" -->
 		<div ng-repeat="product in store.products">
-			<div ng-hide="product.soldOut">
-			dasdflasdjflkajsd 
+			<div ng-hide="product.soldOut"> 
 				<h1> {{product.name}} </h1>
 				<h2> ${{product.price}} </h2>
 				<p> {{product.description}} </p>
