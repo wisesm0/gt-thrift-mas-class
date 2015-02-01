@@ -1,0 +1,2 @@
+# MASThrift
+Repo For MAS
