@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="store"> <!-- module run when the document loads. treats html in element as part of angular app 
+http://www.tutorialspoint.com/bootstrap/bootstrap_buttons.htm
+-->
+	<head>
+    	<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script type="text/javascript" src="angular.min.js"></script>
+		<script type="text/javascript" src="app.js"></script> 
+		<h1>{{"GT Thriftshop!!!"}}</h1> <!-- now part of the angular application -->
+	</head>
+	<body ng-controller="StoreController as store"> <!-- 'as' is a keyword to specify an alias like "store" -->
+		<div ng-repeat="product in store.products" style="background-color: #cccccc;">
+			<div ng-hide="product.soldOut"> 
+				<h1> {{product.name}} </h1>
+				<p> Posted {{product.date | date:"MM/dd/yyyy 'at' h:mma"}}<p>
+				<h2> {{product.price | currency}}</h2>
+				<p> {{product.description}} </p>
+				<button type="button" class="btn btn-primary" ng-show="product.canPurchase">View In Detail</button>
+				<br><br>
+			</div>
+		</div>
+	</body>
+</html>
