@@ -24,9 +24,8 @@
 <!-- <link href="css/bootstrap.min.css" rel="stylesheet">
  -->
 <script type="text/javascript" src="js/angular.min.js"></script>
-<script type="text/javascript" src="js/app2.js"></script> 
-
- <!--[if lt IE 9]>
+<script type="text/javascript" src="js/app.js"></script> 
+<!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
 <![endif]-->
 
@@ -69,6 +68,7 @@
 			<li><a href="#">Category 6</a></li>
 			<li><a href="index.html" class="active">HOME</a></li>
 			<li><a href="#"><img src = "myface.jpg" width="42" height="42"></a></li>
+
 		</ul>
 	</nav>
 	
@@ -79,30 +79,25 @@
 			</li>
 
 			<li class="body-section">
-				<hr>
 	 			<div ng-controller="StoreController as store"> 
 				<!-- 'as' is a keyword to specify an alias like "store" 
 					style="background-color: yellow;"
 				-->
-				<div ng-repeat="product in posts">
-					<div ng-hide="product.soldOut"> 
-						<div class="theitems">
-							<img class="thumbs" ng-src="{{product.picture}}" />
-							<h1 sytle="float:left"> {{product.name}} </h1>
-							<p sytle="float:left"> Posted {{product.date | date:"MM/dd/yyyy 'at' h:mma"}}<p>
-							<h2 style="float:right"> {{product.price | currency}}</h2>
-							<p> {{product.description}} </p><br>
-							<a href = "item.html"><button type="button" class="btn btn-primary" ng-show="product.canPurchase" style="float:right">View In Detail</button></a>
-							<br><br>
-							<hr>
-							<br>
-						<div>
-					</div>
+				<div ng-repeat="product in store.products">
+				<div ng-hide="product.soldOut"> 
+					----------------------------------------------------------------------
+					<h1> {{product.name}} </h1>
+					<p> Posted {{product.date | date:"MM/dd/yyyy 'at' h:mma"}}<p>
+					<h2> {{product.price | currency}}</h2>
+					<p> {{product.description}} </p><br>
+					<a href = "item.html"><button type="button" class="btn btn-primary" ng-show="product.canPurchase">View In Detail</button></a>
+					<br>
+					----------------------------------------------------------------------
+					<br>
 				</div>
 				</div>
-<!-- 				<p class="placefiller">Filler</p>	
- -->
-
+				</div>
+				<p class="placefiller">Filler</p>				
 			</li>
 			<!-- <li class="footer-section">
 				<p class="placefiller">FOOTER</p>
