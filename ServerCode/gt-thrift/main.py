@@ -24,9 +24,9 @@ DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 
 
 def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
-	"""Constructs a Datastore key for a Guestbook entity.
-	"""
-	return ndb.Key('Guestbook', guestbook_name)
+    """Constructs a Datastore key for a Guestbook entity.
+    """
+    return ndb.Key('Guestbook', guestbook_name)
 
 
 
@@ -36,20 +36,20 @@ data = json.load(json_response)
 
 
 class Listing(ndb.Model):
-	"""Models one listing/posting on facebook """
-	title = ndb.StringProperty(indexed=False)
-	message = ndb.StringProperty(indexed=False)
-	category = ndb.StringProperty(indexed=True)
+    """Models one listing/posting on facebook """
+    title = ndb.StringProperty(indexed=False)
+    message = ndb.StringProperty(indexed=False)
+    category = ndb.StringProperty(indexed=True)
 
-for item in data['data']:
-    #print "New item starts here"
-    message = item['message']
-    title = " ".join(message.split()[:10]) + " ..."
-    new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
-    new_listing.title = title
-    new_listing.message = message
-    new_listing.category = "All"
-    new_listing.put()
+# for item in data['data']:
+    # print "New item starts here"
+    # message = item['message']
+    # title = " ".join(message.split()[:10]) + " ..."
+    # new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
+    # new_listing.title = title
+    # new_listing.message = message
+    # new_listing.category = "All"
+    # new_listing.put()
 
 
 
@@ -57,11 +57,16 @@ for item in data['data']:
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-    	greetings_query = Listing.query(ancestor=guestbook_key(DEFAULT_GUESTBOOK_NAME))
-        greetings = greetings_query.fetch(10)
-
-        for greeting in greetings:
-			self.response.write(greeting.message)
+        listings_query = Listing.query(ancestor=guestbook_key(DEFAULT_GUESTBOOK_NAME))
+        listings = listings_query.fetch(10)
+        listings_list = []
+        for listing in listings:
+            d = {}
+            d['message'] = listing.message
+            d['title'] = listing.title
+            listings_list.append(d)
+        js = json.dumps(listings_list)
+        self.response.write(js)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
