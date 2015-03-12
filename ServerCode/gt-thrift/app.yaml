@@ -1,13 +1,27 @@
-application: gt-thrift
-version: 1
+application: genuine-amulet-864
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: yes
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
+- url: /myface\.jpg
+  static_files: thriftshop/myface.jpg
+  upload: thriftshop/myface\.jpg
+
+- url: /(.*\.html)
+  static_files: thriftshop/\1
+  upload: thriftshop/(.*\.html)
+
+- url: /js/(.*\.js)
+  mime_type: text/javascript
+  static_files: thriftshop/js/\1
+  upload: thriftshop/js/(.*\.js)
+
+- url: /css/(.*\.css)
+  mime_type: text/css
+  static_files: thriftshop/css/\1
+  upload: thriftshop/css/(.*\.css)
 
 - url: .*
   script: main.app
