@@ -18,6 +18,7 @@ import webapp2
 import urllib2
 import json
 import logging
+import cgi
 
 from google.appengine.ext import ndb
 
@@ -80,7 +81,7 @@ class updatedbHandler(webapp2.RequestHandler):
                         messagez = item['message']
                     else:
                         messagez = ""
-                    title = " ".join(messagez.split()[:10]) + " ..."
+                    title = " ".join(messagez.split()[:5]) + " ..."
                     d['message'] = messagez
                     d['title'] = title
 
@@ -138,7 +139,7 @@ class CategoryHandler(webapp2.RequestHandler):
 
 class UserHandler(webapp2.RequestHandler):
     def get(self, author_id, page_no):
-        category = str(author_id)
+        author_id = str(author_id)
         page_no = int(page_no)
         result = Listing.query(Listing.author_id == author_id).order(-Listing.date);
         listings_list = []
@@ -189,10 +190,78 @@ class PageHandler(webapp2.RequestHandler):
         js = json.dumps(listings_list)
         self.response.write(js)
 
+class PostListingHandler(webapp2.RequestHandler):
+    def post(self):
+        content = cgi.escape(self.request.get('content'))
+        new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
+        new_listing.title = cgi.escape(self.request.get('title'))
+        new_listing.message = cgi.escape(self.request.get('message'))[0:500]
+        # new_listing.post_id = //write logic to create id?
+        # new_listing.date = item['created_time']
+        new_listing.author_id = cgi.escape(self.request.get('author_name'))
+        new_listing.author_name = cgi.escape(self.request.get('author_id'))
+        new_listing.category = cgi.escape(self.request.get('category'))
+        new_listing.put()
+        self.response.out.write('<html><body>You wrote:<pre>')
+        self.response.out.write("post created")
+        self.response.out.write('</pre></body></html>')
+
+class AllPageHandler(webapp2.RequestHandler):
+    def get(self):
+        page_no = 1
+        page_no = int(page_no)
+        logging.debug("Page no received is " + str(page_no))
+        result = Listing.query().order(-Listing.date);
+        listings_list = []
+        cnt = 0
+        cont_count = 0
+        # debug_string = []
+        for listing in result:
+            cnt = cnt + 1
+            if cnt > (300 * (page_no - 1)) and cnt <= (300 * page_no):
+                d = {}
+                d['message'] = listing.message
+                d['title'] = listing.title
+                d['post_id'] = listing.post_id
+                d['author_id'] = listing.author_id
+                d['author_name'] = listing.author_name
+                d['category'] = listing.category
+                d['picture'] = listing.picture
+                d['date'] = str(listing.date)
+                d['link_to_post'] = listing.link_to_post
+                listings_list.append(d)
+        js = json.dumps(listings_list)
+        self.response.write(js)
+
+class ItemHandler(webapp2.RequestHandler):
+    def get(self,itemid):
+        # self.response.write(itemid)
+        res = Listing.query(Listing.post_id == itemid)
+        listings_list = []
+        if res.count() > 0:
+            # self.response.write(res)
+            for item in res:
+                d = {}
+                d['message'] = item.message
+                d['title'] = item.title
+                d['post_id'] = item.post_id
+                d['author_id'] = item.author_id
+                d['author_name'] = item.author_name
+                d['category'] = item.category
+                d['picture'] = item.picture
+                d['date'] = str(item.date)
+                d['link_to_post'] = item.link_to_post
+                listings_list.append(d)
+        js = json.dumps(listings_list)
+        self.response.write(js) 
+
 app = webapp2.WSGIApplication([
     (r'/getlistings/(\d+)', PageHandler),
     (r'/getlistings/user/(.*)/(\d+)', UserHandler),
     (r'/getlistings/(.*)/(\d+)', CategoryHandler),
+    (r'/getitem/(.*)',ItemHandler),
+    ('/getalllistings/?',AllPageHandler),
     ('/deleteall/?',DeleteAllHandler),
-    ('/updatedb/?',updatedbHandler)
+    ('/updatedb/?',updatedbHandler),
+    ('/postlisting/?',PostListingHandler)
 ], debug=True)
