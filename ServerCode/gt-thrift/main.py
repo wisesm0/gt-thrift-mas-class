@@ -202,8 +202,14 @@ class PostListingHandler(webapp2.RequestHandler):
         hash_object = hashlib.md5(new_listing.message)
         new_listing.post_id = hash_object.hexdigest()
         # new_listing.date = item['created_time']
-        new_listing.author_id = cgi.escape(self.request.get('author_name'))
-        new_listing.author_name = cgi.escape(self.request.get('author_id'))
+        author_id = cgi.escape(self.request.get('author_id'))
+        if author_id=="":
+            author_id = "10200204025"   #default user
+        new_listing.author_id = author_id
+        author_name = cgi.escape(self.request.get('author_name'))
+        if author_name=="":
+            author_name = "Taylor Thrift"
+        new_listing.author_name = author_name
         new_listing.category = cgi.escape(self.request.get('category'))
         new_listing.put()
         self.response.out.write('<html><body>You wrote:<pre>')
