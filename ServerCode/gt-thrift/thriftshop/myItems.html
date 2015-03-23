@@ -69,30 +69,25 @@
 
 	 <!-- style="position:fixed;" -->
 		<ul>
+
 			<!-- change the way this image is diplayed; comoe up with a way to move it from 
 			a thumbnail that is out of place to  -->
-			<!-- will currently hardcode posting categories -->
-			<li><a href="#">Housing</a></li>
-			<!-- home will be "electronics";;; if I screw this up, for demo I will make 8 pages-->
-			<li><a href="#">Electronics</a></li>
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Clothing</a></li>
-			<li><a href="#">Tickets</a></li>
-			<li><a href="#">Sports</a></li>
-			<li><a href="#">Vehicles</a></li> <!-- Motorcycles, Scooters, and Cars -->
-			<li><a href="#">Others</a></li>
-			<!-- home will be "getalllistings" -->
+			<li><a href="#">Category 1</a></li>
+			<li><a href="#">Category 2</a></li>
+			<li><a href="#">Category 3</a></li>
+			<li><a href="#">Category 4</a></li>
+			<li><a href="#">Category 5</a></li>
+			<li><a href="#">Category 6</a></li>
+			<li><a href="#">Category 6</a></li>
 			<li><a href="index.html" class="active">HOME</a></li>
-			<li><a href="myItems.html"><img src = "myface.jpg" width="42" height="42"></a></li>
+			<li><a href="myitems.html"><img src = "myface.jpg" width="42" height="42"></a></li>
 		</ul>
 	</nav>
 	
-	<div class="content slide">     
-		<!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+	<div class="content slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
 		<ul class="responsive">
 			<li class="header-section">
-				<!-- add category for the viewing : currently the category is "all items" -->
-				<p class="placefiller">Viewing: {{category}}</p>
+				<p class="placefiller">Your Items</p>
 			</li>
 
 			<li class="body-section">
@@ -102,29 +97,15 @@
 				<!-- 'as' is a keyword to specify an alias like "store" 
 					style="background-color: yellow;"
 				-->
-
-				<!-- in the next part if any post contains contain the ... -->
-				<div ng-repeat="product in posts | filter:query">
+				<div ng-repeat="product in posts | filter:query | orderBy: 'title' ">
 					<!-- <div ng-hide="product.soldOut">  -->
 						<div class="theitems">
-						<h1 sytle="float:left"> {{product.author_name}} </h1>
-						<img class="thumbs" ng-src="{{product.picture}}" />
-						<h2 sytle="float:left"> {{product.title}} </h2>
-<!-- 						<p sytle="float:left"> Posted {{product.date | date:"MM/dd/yyyy 'at' h:mma"}}<p>
+<!-- 							<img class="thumbs" ng-src="{{product.picture}}" />
+ -->						<h1 sytle="float:left"> {{product.title}} </h1>
+<!-- 							<p sytle="float:left"> Posted {{product.date | date:"MM/dd/yyyy 'at' h:mma"}}<p>
 							<h2 style="float:right"> {{product.price | currency}}</h2> -->
 							<p> {{product.message}} </p><br>
-							<!-- if no price listed just say N/A -->
-							<p style="float:right"> <b>Price: </b> N/A {{product.price}} </p><br><br>
-							<p style="float:right"> {{product.date | date:'medium'}} </p><br>
-							<p style="float:right"> <b>Category: </b>{{product.category}} </p><br><br>
-
-
-
-							<input type="hidden" name="{{product.post_id}}" value="{{product.post_id}}">
-							<!-- we are going to pass/product.post_id to the next page -->
-							<button ng-click="doGreeting(greeting)">ALERT</button>
-							<a href = "item.html"><button type="button" class="btn btn-primary"  style="float:right">View In Detail</button>
-							</a> <!-- ng-show="product.canPurchase" -->
+							<a href = "item.html"><button type="button" class="btn btn-primary"  style="float:right">View In Detail</button></a> <!-- ng-show="product.canPurchase" -->
 							<br><br>
 							<hr>
 							<br>
@@ -134,11 +115,6 @@
 				</div>
 <!-- 				<p class="placefiller">Filler</p>	
  -->
-<!-- 
-<div ng-if="video == video.large">
-</div>
-<div ng-if="video != video.large">
-</div> -->
 
 			</li>
 			<li class="footer-section">
@@ -149,8 +125,7 @@
 	
 </div>
 
-<!--<script> document.cookie="post_name=" + product.post_id; </script> -->
-
+	
 </body> 
 </html>
 

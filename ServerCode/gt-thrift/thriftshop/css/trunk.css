@@ -1,60 +1,6 @@
-/* SEARCH BAR STYLE */
-#tfheader{
-	background-color:#c3dfef;
-}
-#tfnewsearch{
-	float:right;
-	padding:20px;
-}
-.tftextinput{
-	margin: 0;
-	padding: 5px 15px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size:14px;
-	border:1px solid #0076a3; border-right:0px;
-	border-top-left-radius: 5px 5px;
-	border-bottom-left-radius: 5px 5px;
-}
-.tfbutton {
-	margin: 0;
-	padding: 5px 15px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size:14px;
-	outline: none;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
-	color: #ffffff;
-	border: solid 1px #0076a3; border-right:0px;
-	background: #0095cd;
-	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
-	background: -moz-linear-gradient(top,  #00adee,  #0078a5);
-	border-top-right-radius: 5px 5px;
-	border-bottom-right-radius: 5px 5px;
-}
-.tfbutton:hover {
-	text-decoration: none;
-	background: #007ead;
-	background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));
-	background: -moz-linear-gradient(top,  #0095cc,  #00678e);
-}
-/* Fixes submit button height problem in Firefox */
-.tfbutton::-moz-focus-inner {
-  border: 0;
-}
-.tfclear{
-	clear:both;
-}
-
-
-.fb_iframe_widget,
-.fb_iframe_widget span,
-.fb_iframe_widget iframe[style]  {width: 100% !important;}
-
 /* MAIN STYLE */
 body {
 	background-color: #000;
-	
 	font: 12px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 	color: #9aa6af;
 	text-rendering: optimizelegibility;
@@ -160,6 +106,20 @@ nav li a:hover {color: #000;}
 	border: 1px dashed rgba(190, 196, 202, 0.9);
 }
 
+#lebarCover{
+/*	padding:20px;
+	position:fixed; 
+	left:20px;*/	
+	/* do a check when not in */
+}
+
+/*#search::-webkit-search-cancel-button{
+    position:relative;
+    right:20px;    
+}
+*/
+
+
 
 /*@media screen and (max-width: 487px) {
   .site-header .site-branding {
@@ -206,7 +166,28 @@ nav li img {
 	/*@divider*/
 }
 
+#plussage{
+	visibility: hidden;
+}
+/*
+/* BEGIN MEDIA QUERY SECTION 
+*/
+
 @media only screen and (max-width: 780px) {
+
+#plussage{
+	float:right;
+	padding:12px;
+/*	right:20px;
+*/	position:relative; 
+	visibility: visible;
+}
+
+#plussageSize{
+	padding:3px;
+	/*color:white;*/
+	/*background-image:url("http://iconshow.me/media/images/ui/ios7-icons/png/128/plus-round.png");*/
+}
 
 header {
 	height: 60px;
@@ -233,6 +214,14 @@ header h1 {
 .burger {display: block;}
 
 
+#lebarCover{
+	padding:12px;
+	position:relative; 
+	left:80px;
+	/* do a check when not in */
+}
+
+
 nav li img {
 
 	width:200px;
@@ -242,6 +231,8 @@ nav li img {
 	max-height:200px;
 }
 
+
+/* to flip the order of the navigation */ 
 nav ul {
     -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);

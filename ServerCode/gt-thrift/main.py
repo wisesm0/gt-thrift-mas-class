@@ -19,6 +19,7 @@ import urllib2
 import json
 import logging
 import cgi
+import hashlib
 
 from google.appengine.ext import ndb
 
@@ -102,6 +103,8 @@ class updatedbHandler(webapp2.RequestHandler):
                     new_listing.picture = d['picture']
                     if 'link' in item:
                         new_listing.link_to_post = item['link']
+                    else:
+                        new_listing.link_to_post = item['actions'][0]['link']
                     new_listing.put()
                     cnt += 1
             url = data['paging']['next']
@@ -196,7 +199,8 @@ class PostListingHandler(webapp2.RequestHandler):
         new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
         new_listing.title = cgi.escape(self.request.get('title'))
         new_listing.message = cgi.escape(self.request.get('message'))[0:500]
-        # new_listing.post_id = //write logic to create id?
+        hash_object = hashlib.md5(new_listing.message)
+        new_listing.post_id = hash_object.hexdigest()
         # new_listing.date = item['created_time']
         new_listing.author_id = cgi.escape(self.request.get('author_name'))
         new_listing.author_name = cgi.escape(self.request.get('author_id'))

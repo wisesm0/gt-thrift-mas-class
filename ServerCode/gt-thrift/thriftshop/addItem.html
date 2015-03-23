@@ -42,6 +42,7 @@
 		</ul>
 		<div id="lebarCover" style="float:left">
 			<form> <!-- id="demo-b" -->
+				<!--http://codepen.io/PageOnline/pen/nCfAj-->				
 				<input type="search" placeholder="Search">
 			</form>
 		</div>
@@ -60,6 +61,7 @@
 	<nav class="slide" >
 	 <!-- style="position:fixed;" -->
 		<ul>
+
 			<!-- change the way this image is diplayed; comoe up with a way to move it from 
 			a thumbnail that is out of place to  -->
 			<li><a href="#">Housing</a></li>
@@ -71,54 +73,54 @@
 			<li><a href="#">Sports</a></li>
 			<li><a href="#">Vehicles</a></li> <!-- Motorcycles, Scooters, and Cars -->
 			<li><a href="#">Others</a></li>
-			<!-- home will be "getalllistings" -->
 			<li><a href="index.html" class="active">HOME</a></li>
-			<li><a href="myItems.html"><img src = "myface.jpg" width="42" height="42"></a></li>
+			<li><a href="#"><img src = "myface.jpg" width="42" height="42"></a></li>
+
 		</ul>
 	</nav>
-
-	<!-- get post id data  -->
-	<div ng-controller="StoreController as store"> 
-		<div class="content slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
-			<ul class="responsive">
+	
+	<div class="content slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+		<ul class="responsive">
+<!-- 			onSubmit="return validate(this)"-->			
+			<form method="POST" action='/postlisting/' class='post_form' accept-charset="utf-8">
 				<li class="header-section">
-					<!-- get the id of the current item, with a different json url... -->
-					<p class="placefiller">Posted by <a href="#">{{posts.author_name}}</a></p>
-					<p class="placefiller">{{posts.title}}</p>
+					<!-- BASED ON THE EMAIL OR FACEBOOK ID LOGGED IN -->
+					<p class="placefiller">Poster: John Wall</p>
+					<p class="placefiller">Title: <input type="text" placeholder="title" name="title"></p> 
 				</li>
 
 				<li class="body-section" style="text-align:center;">
-	<!-- 	 			<p class="placefiller">				</p>-->
-					<!-- if no price listed just say N/A -->
-					<article>{{posts.date | date:'medium'}} | <b>Price:</b> {{posts.price}} </article><br>
-
-<!-- 					include an ng-if if no picture exists: -->
-		 			<img src= "{{posts.picture}}" style="max-width:40%;height:auto;">	
+				<!-- <p class="placefiller"></p>-->
+					<article>
+					Category: <select name="category">
+						  <option value="Electronics">Electronics</option>
+						  <option value="Home">Home</option>
+						  <option value="Clothing">Clothing</option>
+						  <option value="Tickets">Tickets</option>
+						  <option value="Sports">Sports</option>
+						  <option value="Vehicles">Vehicles</option>
+						  <option value="Others">Other</option>
+						</select>
+					</article><br><br>
+		 			<img src="http://www.ikea.com/us/en/images/products/ektorp-sofa-white__22361_PE107241_S4.JPG" alt="Royal Enfield Motorcycle, photographed by Renjith Sasidharan" style="max-width:40%;height:auto;">	
 		 			<br><br>
-		 			<article>{{posts.message}}</article>
+		 			<article>
+		 				<textarea name="message"> Type description here... 
+		 				</textarea>
+					</article>
 		 			<br><br>
-		 			<button>Reply</button>
+					<!-- http://stackoverflow.com/questions/630453/put-vs-post-in-rest-->		 			
+ 					<!-- Here is where they are taken to their item.html page - take them home for now!! -->
+  					<input type='submit' value='Submit to the Shop!' class='submit' />
 				</li>
+			</form>
 
+			<li class="footer-section" >
+			<!-- style = "text-align:center"-->
+			<p class="placefiller">FOOTER</p>
 
-				<li class="footer-section" >
-	<!-- 		style = "text-align:center"		<p class="placefiller">FOOTER</p>-->
-					<div id="fb-root"></div>
-					<script>(function(d, s, id) {
-					  var js, fjs = d.getElementsByTagName(s)[0];
-					  if (d.getElementById(id)) return;
-					  js = d.createElement(s); js.id = id;
-					  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-					  fjs.parentNode.insertBefore(js, fjs);
-					}(document, 'script', 'facebook-jssdk'));</script>	
-
-	<!-- 				http://www.e-socialite.com/2014/solved-facebook-comments-100-width-problems
-	data-mobile="true" - find a way to associate it with the current url -->				
-					<div class="fb-comments" data-width = "100%" data-href="https://www.facebook.com/groups/199456403537988/permalink/452793968204229/
-" data-numposts="5" data-colorscheme="light" ></div>		
-				</li>
-			</ul>
-		</div>
+			</li>
+		</ul>
 	</div>
 	
 </div>
