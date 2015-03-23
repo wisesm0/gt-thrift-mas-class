@@ -54,6 +54,7 @@ class Listing(ndb.Model):
     author_name = ndb.StringProperty(indexed=False)
     author_id = ndb.StringProperty(indexed=True)
     link_to_post = ndb.StringProperty(indexed=False)
+    tags = ndb.StringProperty(repeated=True)
 
 
 class DeleteAllHandler(webapp2.RequestHandler):
@@ -93,6 +94,7 @@ class updatedbHandler(webapp2.RequestHandler):
                     new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
                     new_listing.title = d['title']
                     new_listing.message = d['message'][0:500]
+                    new_listing.tags = d['message'][0:500].split()
                     new_listing.post_id = item['id']
                     new_listing.date = item['created_time']
                     new_listing.author_id = item['from']['id']
@@ -165,6 +167,35 @@ class UserHandler(webapp2.RequestHandler):
                 listings_list.append(d)
         js = json.dumps(listings_list)
         self.response.write(js)
+
+
+class SearchHandler(webapp2.RequestHandler):
+    def get(self, search_str, page_no):
+        search_str = str(search_str)
+        page_no = int(page_no)
+        result = Listing.query(Listing.tags.IN([search_str]) ).order(-Listing.date);
+        listings_list = []
+        cnt = 0
+        cont_count = 0
+        # debug_string = []
+        for listing in result:
+            cnt = cnt + 1
+            if cnt > (PER_PAGE * (page_no - 1)) and cnt <= (PER_PAGE * page_no):
+                d = {}
+                d['message'] = listing.message
+                d['title'] = listing.title
+                d['post_id'] = listing.post_id
+                d['author_id'] = listing.author_id
+                d['author_name'] = listing.author_name
+                d['category'] = listing.category
+                d['picture'] = listing.picture
+                d['date'] = str(listing.date)
+                d['link_to_post'] = listing.link_to_post
+                listings_list.append(d)
+        js = json.dumps(listings_list)
+        self.response.write(js)
+
+
 
 
 class PageHandler(webapp2.RequestHandler):
@@ -269,6 +300,7 @@ app = webapp2.WSGIApplication([
     (r'/getlistings/(\d+)', PageHandler),
     (r'/getlistings/user/(.*)/(\d+)', UserHandler),
     (r'/getlistings/(.*)/(\d+)', CategoryHandler),
+    (r'/search/(.*)/(\d+)', SearchHandler),
     (r'/getitem/(.*)',ItemHandler),
     ('/getalllistings/?',AllPageHandler),
     ('/deleteall/?',DeleteAllHandler),
