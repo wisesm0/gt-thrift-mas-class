@@ -2,7 +2,7 @@
 body {
 	background-color: #000;
 	font: 12px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	color: #9aa6af;
+	color: #000000;
 	text-rendering: optimizelegibility;
 	
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
@@ -29,6 +29,13 @@ a {text-decoration: none;}
 	-ms-backface-visibility: hidden;
 }
 
+h1 {
+	color: #00004c;
+}
+
+h2 {
+	color: #AF7817;
+}
 
 header {
 	height: 60px;
@@ -140,14 +147,14 @@ nav li a:hover {color: #000;}
 }*/
 
 nav li img {
-	position:absolute; /*fixed*/
+	position:absolute; fixed
 	top:10px;
 /*	right:10px;
 */}
 
 .thumbs{
-	width:42px;
-	height:42px;
+	width:110px;
+	height:110px;
 	position:static;
 /*	float:left;*/
 	max-width:200px;

@@ -84,7 +84,7 @@
         // });
 
 
-        $http({method: 'GET', url: $scope.acases[7].url}).success(function(data) {
+        $http({method: 'GET', url: $scope.acases[8].url}).success(function(data) {
             $scope.posts = data; 
 
             $scope.doesItemMatch = function(item) {

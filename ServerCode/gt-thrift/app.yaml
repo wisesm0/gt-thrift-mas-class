@@ -23,6 +23,16 @@ handlers:
   static_files: thriftshop/css/\1
   upload: thriftshop/css/(.*\.css)
 
+- url: /img/(.*\.jpg)
+  mime_type: image/jpeg
+  static_files: thriftshop/img/\1
+  upload: thriftshop/css/(.*\.jpg)
+
+- url: /img/(.*\.png)
+  mime_type: image/png
+  static_files: thriftshop/img/\1
+  upload: thriftshop/css/(.*\.png)
+  
 - url: .*
   script: main.app
 

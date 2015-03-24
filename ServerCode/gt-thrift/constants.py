@@ -1,4 +1,4 @@
-PER_PAGE = 20
+PER_PAGE = 30
 KEYWORDS_ELECTRONICS_AND_COMPUTERS = {
     "lenovo" : True,
     "laptop" : True,
@@ -134,17 +134,17 @@ KEYWORDS_HOUSING = {
 }
 
 
-CATEGORIES = [ ("Housing", KEYWORDS_HOUSING), ("Electronics & Computers", KEYWORDS_ELECTRONICS_AND_COMPUTERS), ("Home, Garden & Tools", KEYWORDS_HOME_GARDEN_TOOLS_AND_INSTRUMENTS), \
-               ("Clothing, Shoes & Jewelery", KEYWORDS_CLOTHING_SHOES_AND_JEWELERY), ("Tickets", KEYWORDS_TICKETS), ("Sports and Outdoors", KEYWORDS_SPORTS_AND_OUTDOORS), \
-               ("Motorcycles, Scooters & Cars", KEYWORDS_MOTORCYCLES_SCOOTERS_AND_CARS)]
+CATEGORIES = [ ("Housing", KEYWORDS_HOUSING), ("Electronics and Computers", KEYWORDS_ELECTRONICS_AND_COMPUTERS), ("Home, Garden and Tools", KEYWORDS_HOME_GARDEN_TOOLS_AND_INSTRUMENTS), \
+               ("Clothing, Shoes and Jewelery", KEYWORDS_CLOTHING_SHOES_AND_JEWELERY), ("Tickets", KEYWORDS_TICKETS), ("Sports and Outdoors", KEYWORDS_SPORTS_AND_OUTDOORS), \
+               ("Motorcycles, Scooters and Cars", KEYWORDS_MOTORCYCLES_SCOOTERS_AND_CARS)]
 
 
 CATEGORY_SMALL_TO_BIG_MAP = {  "housing" : "Housing",
-                               "electronics" : "Electronics & Computers",
-                               "home" : "Home, Garden & Tools",
-                               "clothing" : "Clothing, Shoes & Jewelery",
+                               "electronics" : "Electronics and Computers",
+                               "home" : "Home, Garden and Tools",
+                               "clothing" : "Clothing, Shoes and Jewelery",
                                "tickets" : "Tickets",
                                "sports" : "Sports and Outdoors",
-                               "cars" : "Motorcycles, Scooters & Cars",
+                               "cars" : "Motorcycles, Scooters and Cars",
                                "others" : "Others"
                             } 

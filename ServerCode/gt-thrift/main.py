@@ -71,7 +71,7 @@ class updatedbHandler(webapp2.RequestHandler):
         url = START_URL
         cnt = 0
         # debug_string = ""
-        for page_no in range(20):
+        for page_no in range(50):
             json_response = urllib2.urlopen(url)
             data = json.load(json_response)
             # debug_string += "Page no fetching is " + str(page_no) + "\n"
@@ -83,6 +83,8 @@ class updatedbHandler(webapp2.RequestHandler):
                         messagez = item['message']
                     else:
                         messagez = ""
+                    if messagez=="":
+                        continue
                     title = " ".join(messagez.split()[:5]) + " ..."
                     d['message'] = messagez
                     d['title'] = title
@@ -241,9 +243,11 @@ class PostListingHandler(webapp2.RequestHandler):
         if author_name=="":
             author_name = "Taylor Thrift"
         new_listing.author_name = author_name
+        new_listing.link_to_post = cgi.escape(self.request.get('link_to_post'))
         new_listing.category = cgi.escape(self.request.get('category'))
+        new_listing.picture = cgi.escape(self.request.get('picture'))
         new_listing.put()
-        self.response.out.write('<html><body>You wrote:<pre>')
+        self.response.out.write('<html><head><meta http-equiv="refresh" content="0; url=http://2.genuine-amulet-864.appspot.com/index.html" /></head><body>You wrote:<pre>')
         self.response.out.write("post created")
         self.response.out.write('</pre></body></html>')
 

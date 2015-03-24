@@ -83,19 +83,20 @@
 			<ul class="responsive">
 				<li class="header-section">
 					<!-- get the id of the current item, with a different json url... -->
-					<p class="placefiller">Posted by <a href="#">{{posts.author_name}}</a></p>
-					<p class="placefiller">{{posts.title}}</p>
+					<p class="placefiller">Posted by <a href="#">{{posts[inde].author_name}}</a></p>
+					<p class="placefiller">{{posts[inde].title}}</p>
 				</li>
 
 				<li class="body-section" style="text-align:center;">
 	<!-- 	 			<p class="placefiller">				</p>-->
 					<!-- if no price listed just say N/A -->
-					<article>{{posts.date | date:'medium'}} | <b>Price:</b> {{posts.price}} </article><br>
+					<article>{{posts[inde].date | date:'medium'}} | <b>Price:</b> {{posts[inde].price}} </article><br>
 
 <!-- 					include an ng-if if no picture exists: -->
-		 			<img src= "{{posts.picture}}" style="max-width:40%;height:auto;">	
+					<span ng-if="checked" class="animate-if">This is removed when the checkbox is unchecked.</span>
+		 			<img src= "{{posts[inde].picture}}" style="max-width:40%;height:auto;">	
 		 			<br><br>
-		 			<article>{{posts.message}}</article>
+		 			<article>{{posts[inde].message}}</article>
 		 			<br><br>
 		 			<button>Reply</button>
 				</li>
