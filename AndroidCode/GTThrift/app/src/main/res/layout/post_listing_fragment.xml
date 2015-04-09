@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    >
+
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.worksokay.MainActivity$PlaceholderFragment" >
+
+        <ImageView
+            android:id="@+id/imageProfile"
+            android:layout_centerHorizontal="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:id="@+id/postedByText"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imageProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Posted by (you)" />
+        <TextView
+            android:id="@+id/titleHint"
+            android:textSize="20sp"
+            android:layout_below="@+id/postedByText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Title" />
+        <EditText
+            android:id="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/titleHint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:hint="type title"
+            android:layout_marginBottom="15dp"
+            android:inputType="text" />
+        <TextView
+            android:id="@+id/descriptionHint"
+            android:textSize="20sp"
+            android:layout_below="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Description" />
+        <EditText
+            android:id="@+id/description"
+            android:layout_below="@+id/descriptionHint"
+            android:layout_centerHorizontal="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="type item description"
+            android:layout_marginBottom="15dp"
+            android:inputType="textMultiLine" />
+        <TextView
+            android:id="@+id/categoryHint"
+            android:textSize="20sp"
+            android:layout_below="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text=" Category" />
+        <Spinner
+            android:id="@+id/category"
+            android:layout_below="@+id/categoryHint"
+            android:layout_centerHorizontal="true"
+            android:entries="@array/category_array"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/userImage"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/category"
+            android:textSize="20sp"
+            android:text="Tap to add picture"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/imageborder"
+            />
+        <Button
+            android:id="@+id/replyButton"
+            android:layout_below="@+id/userImage"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/roundedbutton"
+            android:text="post"/>
+
+    </RelativeLayout>
+</ScrollView>
+</RelativeLayout>

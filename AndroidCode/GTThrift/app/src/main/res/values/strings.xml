@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GTThrift</string>
+    <string name = "title_section0">GTThrift</string>
+
+    <string name="title_section1">Electronics</string>
+    <string name="title_section2">Home</string>
+    <string name="title_section3">Clothing</string>
+    <string name="title_section4">Tickets</string>
+    <string name="title_section5">Sports</string>
+    <string name="title_section6">Cars</string>
+    <string name="title_section7">Housing</string>
+    <string name="title_section8">Others</string>
+    <string-array name="category_array">
+        <item>Housing</item>
+        <item>Electronics and Computers</item>
+        <item>Home, Garden and Tools</item>
+        <item>Clothing, Shoes and Jewelery</item>
+        <item>Tickets</item>
+        <item>Sports and Outdoors</item>
+        <item>Motorcycles, Scooters and Cars</item>
+        <item>Others</item>
+    </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

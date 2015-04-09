@@ -1,0 +1,10 @@
+<html>
+    <title>My Website</title>
+<body>
+    <script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2" 
+        async></script>  
+    <div class="fb-post" 
+        data-href="https://www.facebook.com/FacebookDevelopers/posts/10152128760693553"
+        data-width="500"></div>
+</body>
+</html>
