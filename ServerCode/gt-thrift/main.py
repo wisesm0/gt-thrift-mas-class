@@ -20,12 +20,15 @@ import json
 import logging
 import cgi
 import hashlib
-
+from google.appengine.api import mail
 from google.appengine.ext import ndb
 
 from constants import CATEGORIES, PER_PAGE, CATEGORY_SMALL_TO_BIG_MAP
 
 START_URL = "https://graph.facebook.com/v2.2/199456403537988/feed?access_token=CAANI8ZBCAeOwBAHy59OJRb3B9y9X9aNn2XekTCjBsEWlR4H71M0srnqT4DJ6fnZBvPfilH8Nm4xXBYAZA3JwMqD5ElrlcptoNaEDZCRYtRTaPqhRqio7S6ioxTYXOT2ABANENj2mrHF6FNBv6et3X7hrbMzsIU8ZBK3YN5LlcNzAoQFpBB3HtNw354QdVggfLAemF4fzElS3nVRB6yOqE"
+#To get comments from facebook:
+#199456403537988_453511081465851/comments
+#https://graph.facebook.com/v2.2/199456403537988_453511081465851/comments?access_token=CAANI8ZBCAeOwBAHy59OJRb3B9y9X9aNn2XekTCjBsEWlR4H71M0srnqT4DJ6fnZBvPfilH8Nm4xXBYAZA3JwMqD5ElrlcptoNaEDZCRYtRTaPqhRqio7S6ioxTYXOT2ABANENj2mrHF6FNBv6et3X7hrbMzsIU8ZBK3YN5LlcNzAoQFpBB3HtNw354QdVggfLAemF4fzElS3nVRB6yOqE
 DEFAULT_GUESTBOOK_NAME = 'default_guest'
 
 
@@ -56,6 +59,10 @@ class Listing(ndb.Model):
     link_to_post = ndb.StringProperty(indexed=False)
     tags = ndb.StringProperty(repeated=True)
 
+class Authenticate(ndb.Model):
+    username = ndb.StringProperty(indexed=True)
+    password = ndb.StringProperty(indexed=True)
+
 
 class DeleteAllHandler(webapp2.RequestHandler):
     def get(self):
@@ -71,7 +78,7 @@ class updatedbHandler(webapp2.RequestHandler):
         url = START_URL
         cnt = 0
         # debug_string = ""
-        for page_no in range(50):
+        for page_no in range(30):
             json_response = urllib2.urlopen(url)
             data = json.load(json_response)
             # debug_string += "Page no fetching is " + str(page_no) + "\n"
@@ -300,6 +307,63 @@ class ItemHandler(webapp2.RequestHandler):
         js = json.dumps(listings_list)
         self.response.write(js) 
 
+class commentsHandler(webapp2.RequestHandler):
+    def get(self,post_id):
+        # self.response.write(post_id)
+        comment_url = "https://graph.facebook.com/v2.2/" + str(post_id) + "/comments?access_token=CAANI8ZBCAeOwBAHy59OJRb3B9y9X9aNn2XekTCjBsEWlR4H71M0srnqT4DJ6fnZBvPfilH8Nm4xXBYAZA3JwMqD5ElrlcptoNaEDZCRYtRTaPqhRqio7S6ioxTYXOT2ABANENj2mrHF6FNBv6et3X7hrbMzsIU8ZBK3YN5LlcNzAoQFpBB3HtNw354QdVggfLAemF4fzElS3nVRB6yOqE"
+        # self.response.write(comment_url)
+        json_response = urllib2.urlopen(comment_url)
+        data = json.load(json_response)
+        # debug_string += "Page no fetching is " + str(page_no) + "\n"
+        comments_list = []
+        for item in data['data']:
+            d = {}
+            d['message'] = item['message']
+            d['comment_by'] = item['from']['name']
+            d['created_time'] = item['created_time']
+            d['author_id'] = item['from']['id']
+            comments_list.append(d)
+        js = json.dumps(comments_list)
+        self.response.write(js)
+
+class createuserHandler(webapp2.RequestHandler):
+    def get(self,username):
+        # if str(username).contains("@gatech.edu"):
+            #Generate hash
+        hash_object = hashlib.md5(username)
+        hash_string = hash_object.hexdigest()
+        sender_address = "sairam413@gmail.com"
+        subject = "GT Thrift - Password"
+        res = Authenticate.query(Authenticate.username == str(username))
+        body = ""
+        if res.count() == 0:
+            new_user = Authenticate(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
+            new_user.username = str(username)
+            new_user.password = str(hash_string)
+            new_user.put()
+            body = """Your password to login to the system is %s""" % str(hash_string)
+        else:
+            password = res(0).password
+            body = """Your password to login to the system is %s""" % password
+        
+        user_address = str(username) + str("@gatech.edu")
+        mail.send_mail(sender_address, user_address, subject, body)
+
+class authenticateHandler(webapp2.RequestHandler):
+    def post(self):
+        username = cgi.escape(self.request.get('username'))
+        password = cgi.escape(self.request.get('password'))
+        hash_object = hashlib.md5(username)
+        hash_string = hash_object.hexdigest()
+        if str(password) == str(hash_string):
+            self.response.write(1)
+        else:
+            self.response.write(0)
+
+class changePasswordHandler(webapp2.RequestHandler):
+    def get(self,username):
+        self.response.write(1)
+
 app = webapp2.WSGIApplication([
     (r'/getlistings/(\d+)', PageHandler),
     (r'/getlistings/user/(.*)/(\d+)', UserHandler),
@@ -309,5 +373,9 @@ app = webapp2.WSGIApplication([
     ('/getalllistings/?',AllPageHandler),
     ('/deleteall/?',DeleteAllHandler),
     ('/updatedb/?',updatedbHandler),
-    ('/postlisting/?',PostListingHandler)
+    (r'/getcomments/(.*)',commentsHandler),
+    ('/postlisting/?',PostListingHandler),
+    (r'/createuser/(.*)',createuserHandler),
+    (r'/changepassword/(.*)',changePasswordHandler),
+    ('/authenticate/',authenticateHandler)
 ], debug=True)
