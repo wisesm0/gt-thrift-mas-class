@@ -343,7 +343,11 @@ class createuserHandler(webapp2.RequestHandler):
             new_user.put()
             body = """Your password to login to the system is %s""" % str(hash_string)
         else:
-            password = res(0).password
+            first_item = None
+            for item in res:
+                first_item = item
+                break
+            password = first_item.password
             body = """Your password to login to the system is %s""" % password
         
         user_address = str(username) + str("@gatech.edu")
@@ -353,16 +357,32 @@ class authenticateHandler(webapp2.RequestHandler):
     def post(self):
         username = cgi.escape(self.request.get('username'))
         password = cgi.escape(self.request.get('password'))
-        hash_object = hashlib.md5(username)
-        hash_string = hash_object.hexdigest()
-        if str(password) == str(hash_string):
+        res = Authenticate.query(Authenticate.username == str(username))
+        first_item = None
+        for item in res:
+            first_item = item
+            break
+        password_db = first_item.password
+        if str(password) == str(password_db):
             self.response.write(1)
         else:
             self.response.write(0)
 
 class changePasswordHandler(webapp2.RequestHandler):
-    def get(self,username):
-        self.response.write(1)
+    def post(self):
+        username = cgi.escape(self.request.get('username'))
+        new_password = cgi.escape(self.request.get('newpassword'))
+        res = Authenticate.query(Authenticate.username == str(username))
+        first_item = None
+        for item in res:
+            first_item = item
+            break
+        first_item.password = new_password
+        try:
+            ret = first_item.put()
+            self.response.write(1)
+        except Exception, e:
+            self.response.write(0)
 
 app = webapp2.WSGIApplication([
     (r'/getlistings/(\d+)', PageHandler),
@@ -376,6 +396,6 @@ app = webapp2.WSGIApplication([
     (r'/getcomments/(.*)',commentsHandler),
     ('/postlisting/?',PostListingHandler),
     (r'/createuser/(.*)',createuserHandler),
-    (r'/changepassword/(.*)',changePasswordHandler),
-    ('/authenticate/',authenticateHandler)
+    ('/changepassword/?',changePasswordHandler),
+    ('/authenticate/?',authenticateHandler)
 ], debug=True)
