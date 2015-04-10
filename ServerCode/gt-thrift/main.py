@@ -67,6 +67,7 @@ class Authenticate(ndb.Model):
 class DeleteAllHandler(webapp2.RequestHandler):
     def get(self):
         ndb.delete_multi(Listing.query().fetch(keys_only=True))
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write("Deleted all keys")
         
 class updatedbHandler(webapp2.RequestHandler):
@@ -119,6 +120,7 @@ class updatedbHandler(webapp2.RequestHandler):
                     new_listing.put()
                     cnt += 1
             url = data['paging']['next']
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write("Updated the database with " + str(cnt) + " new entries")
 
 
@@ -148,6 +150,7 @@ class CategoryHandler(webapp2.RequestHandler):
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 
@@ -175,6 +178,7 @@ class UserHandler(webapp2.RequestHandler):
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 
@@ -202,6 +206,7 @@ class SearchHandler(webapp2.RequestHandler):
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 
@@ -231,6 +236,7 @@ class PageHandler(webapp2.RequestHandler):
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 class PostListingHandler(webapp2.RequestHandler):
@@ -254,6 +260,7 @@ class PostListingHandler(webapp2.RequestHandler):
         new_listing.category = cgi.escape(self.request.get('category'))
         new_listing.picture = cgi.escape(self.request.get('picture'))
         new_listing.put()
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.out.write('<html><head><meta http-equiv="refresh" content="0; url=http://2.genuine-amulet-864.appspot.com/index.html" /></head><body>You wrote:<pre>')
         self.response.out.write("post created")
         self.response.out.write('</pre></body></html>')
@@ -283,6 +290,7 @@ class AllPageHandler(webapp2.RequestHandler):
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 class ItemHandler(webapp2.RequestHandler):
@@ -305,6 +313,7 @@ class ItemHandler(webapp2.RequestHandler):
                 d['link_to_post'] = item.link_to_post
                 listings_list.append(d)
         js = json.dumps(listings_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js) 
 
 class commentsHandler(webapp2.RequestHandler):
@@ -324,6 +333,7 @@ class commentsHandler(webapp2.RequestHandler):
             d['author_id'] = item['from']['id']
             comments_list.append(d)
         js = json.dumps(comments_list)
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
 class createuserHandler(webapp2.RequestHandler):
@@ -363,6 +373,7 @@ class authenticateHandler(webapp2.RequestHandler):
             first_item = item
             break
         password_db = first_item.password
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         if str(password) == str(password_db):
             self.response.write(1)
         else:
@@ -378,6 +389,7 @@ class changePasswordHandler(webapp2.RequestHandler):
             first_item = item
             break
         first_item.password = new_password
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         try:
             ret = first_item.put()
             self.response.write(1)

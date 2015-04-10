@@ -13,6 +13,10 @@ handlers:
   static_files: thriftshop/\1
   upload: thriftshop/(.*\.html)
 
+- url: /(.*\.php)
+  static_files: thriftshop/\1
+  upload: thriftshop/(.*\.php)  
+  
 - url: /js/(.*\.js)
   mime_type: text/javascript
   static_files: thriftshop/js/\1
