@@ -1,0 +1,155 @@
+<!DOCTYPE html> 
+<html lang="en" ng-app="store">
+<head> 
+
+<title>The Item</title> 
+
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="HandheldFriendly" content="True">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- Style Sheets --> 
+<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/trunk.css" />
+
+<!-- Scripts --> 
+<script type="text/javascript">
+	if (typeof jQuery == 'undefined')
+		document.write(unescape("%3Cscript src='js/jquery-1.9.js'" + 
+								"type='text/javascript'%3E%3C/script%3E"))
+</script>
+<script type="text/javascript" language="javascript" src="js/trunk.js"></script>
+<!-- <link href="css/bootstrap.min.css" rel="stylesheet">
+ -->
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/app2.js"></script> 
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<![endif]-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+
+var eventposted=0;
+
+$(document).ready(function(){
+  $('input.button').click(function() {
+    window.setInterval(foo, 100);
+  });
+});
+
+function foo(){
+  if(($(".form-submission-text").is(':visible')) && (eventposted==0)){
+    window.location = "http://www.something.com/destinationpage";
+    eventposted=1;
+  }
+}
+
+</script>
+
+</head> 
+ 
+<body> 
+
+<div class="container">
+
+	<header class="slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+		<ul id="navToggle" class="burger slide">    <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+			<li></li><li></li><li></li>
+		</ul>
+		<div id="lebarCover" style="float:left">
+			<form> <!-- id="demo-b" -->
+				<!--http://codepen.io/PageOnline/pen/nCfAj-->				
+				<input type="search" placeholder="Search">
+			</form>
+		</div>
+		<div id="plussage"><button id="plussageSize"><a href="addItem.html"><img src="http://iconshow.me/media/images/ui/ios7-icons/png/128/plus-round.png" width="30" height ="30"></a></button> </div>
+<!-- 		says gt thrift shop in html view
+<div id="tfheader">
+		<form id="tfnewsearch" method="get" action="http://www.google.com">
+		        <input type="text" class="tftextinput" name="q" size="21" maxlength="120"><input type="submit" value="search" class="tfbutton">
+		</form>
+	<div class="tfclear"></div>
+	</div>
+
+ -->	
+	</header>
+
+	<nav class="slide" >
+	 <!-- style="position:fixed;" -->
+		<ul>
+
+			<!-- change the way this image is diplayed; comoe up with a way to move it from 
+			a thumbnail that is out of place to  -->
+			<li><a href="#">Housing</a></li>
+			<!-- home will be "electronics";;; if I screw this up, for demo I will make 8 pages-->
+			<li><a href="#">Electronics</a></li>
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Clothing</a></li>
+			<li><a href="#">Tickets</a></li>
+			<li><a href="#">Sports</a></li>
+			<li><a href="#">Vehicles</a></li> <!-- Motorcycles, Scooters, and Cars -->
+			<li><a href="#">Others</a></li>
+			<li><a href="index.html" class="active">HOME</a></li>
+			<li><a href="#"><img src = "myface.jpg" width="42" height="42"></a></li>
+
+		</ul>
+	</nav>
+	
+	<div class="content slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+		<ul class="responsive">
+<!-- 			onSubmit="return validate(this)"-->			
+			<form method="POST" action='/postlisting/' class='post_form' accept-charset="utf-8">
+				<li class="header-section">
+					<!-- BASED ON THE EMAIL OR FACEBOOK ID LOGGED IN -->
+					<p class="placefiller">Poster: <b>Taylor Swift</b></p>
+					<p class="placefiller">Title: <input type="text" placeholder="title" name="title"></p> 
+				</li>
+
+				<li class="body-section" style="text-align:center;">
+				<!-- <p class="placefiller"></p>-->
+					<article>
+					Category: <select name="category">
+						  <option value="Electronics">Electronics</option>
+						  <option value="Home">Home</option>
+						  <option value="Clothing">Clothing</option>
+						  <option value="Tickets">Tickets</option>
+						  <option value="Sports">Sports</option>
+						  <option value="Vehicles">Vehicles</option>
+						  <option value="Others">Other</option>
+						</select>
+					</article><br><br>
+		 			<img src="http://rlv.zcache.com/template_blank_add_your_image_text_here_sticker-r64216cd6594f4f23bdad64fee876a3a1_v9waf_8byvr_512.jpg?bg=0xffffff" alt="Add your photo here" style="max-width:40%;height:auto;">	
+		 			<br><br>
+		 			<article>
+		 				<textarea name="message"> Type description here... 
+		 				</textarea>
+					</article>
+		 			<br><br>
+					<!-- http://stackoverflow.com/questions/630453/put-vs-post-in-rest-->		 			
+ 					<!-- Here is where they are taken to their item.html page - take them home for now!! -->
+  					<input type='submit' value='Submit to the Shop!' class='submit'/>
+				</li>
+			</form>
+
+			<li class="footer-section" >
+			<!-- style = "text-align:center"-->
+			<p class="placefiller">FOOTER</p>
+
+			</li>
+		</ul>
+	</div>
+	
+</div>
+
+	
+</body> 
+</html>
+
+
+
+
+
+
+
