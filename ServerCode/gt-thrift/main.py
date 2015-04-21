@@ -22,6 +22,7 @@ import cgi
 import hashlib
 from google.appengine.api import mail
 from google.appengine.ext import ndb
+from google.appengine.api import images
 
 from constants import CATEGORIES, PER_PAGE, CATEGORY_SMALL_TO_BIG_MAP
 
@@ -57,6 +58,7 @@ class Listing(ndb.Model):
     author_name = ndb.StringProperty(indexed=False)
     author_id = ndb.StringProperty(indexed=True)
     link_to_post = ndb.StringProperty(indexed=False)
+    image_post = ndb.BlobProperty()
     tags = ndb.StringProperty(repeated=True)
 
 class Authenticate(ndb.Model):
@@ -145,12 +147,15 @@ class CategoryHandler(webapp2.RequestHandler):
                 d['author_id'] = listing.author_id
                 d['author_name'] = listing.author_name
                 d['category'] = listing.category
+                if listing.picture == "":
+                    if listing.image_post is not None and listing.image_post != "":
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
                 d['picture'] = listing.picture
                 d['date'] = str(listing.date)
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
-        js = json.dumps(listings_list)
         self.response.headers['Access-Control-Allow-Origin'] = '*'
+        js = json.dumps(listings_list)
         self.response.write(js)
 
 
@@ -173,12 +178,16 @@ class UserHandler(webapp2.RequestHandler):
                 d['author_id'] = listing.author_id
                 d['author_name'] = listing.author_name
                 d['category'] = listing.category
-                d['picture'] = listing.picture
+                if listing.picture == "":
+                    if listing.image_post is not None and listing.image_post != "":
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
+                else:
+                    d['picture'] = listing.picture
                 d['date'] = str(listing.date)
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
-        js = json.dumps(listings_list)
         self.response.headers['Access-Control-Allow-Origin'] = '*'
+        js = json.dumps(listings_list)
         self.response.write(js)
 
 
@@ -201,6 +210,9 @@ class SearchHandler(webapp2.RequestHandler):
                 d['author_id'] = listing.author_id
                 d['author_name'] = listing.author_name
                 d['category'] = listing.category
+                if listing.picture == "":
+                    if listing.image_post is not None and listing.image_post != "":
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
                 d['picture'] = listing.picture
                 d['date'] = str(listing.date)
                 d['link_to_post'] = listing.link_to_post
@@ -231,7 +243,11 @@ class PageHandler(webapp2.RequestHandler):
                 d['author_id'] = listing.author_id
                 d['author_name'] = listing.author_name
                 d['category'] = listing.category
-                d['picture'] = listing.picture
+                if listing.picture == "":
+                    if listing.image_post:
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
+                else:
+                    d['picture'] = listing.picture
                 d['date'] = str(listing.date)
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
@@ -239,13 +255,25 @@ class PageHandler(webapp2.RequestHandler):
         self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.write(js)
 
+# [START image_handler]
+class Image(webapp2.RequestHandler):
+    def get(self):
+        listing_key = ndb.Key(urlsafe=self.request.get('img_id'))
+        listing = listing_key.get()
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
+        if listing.image_post:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(listing.image_post)
+        else:
+            self.response.out.write('')
+
 class PostListingHandler(webapp2.RequestHandler):
     def post(self):
         content = cgi.escape(self.request.get('content'))
         new_listing = Listing(parent=guestbook_key(DEFAULT_GUESTBOOK_NAME))
         new_listing.title = cgi.escape(self.request.get('title'))
         new_listing.message = cgi.escape(self.request.get('message'))[0:500]
-        hash_object = hashlib.md5(new_listing.message)
+        hash_object = hashlib.md5(new_listing.message + new_listing.title)
         new_listing.post_id = hash_object.hexdigest()
         # new_listing.date = item['created_time']
         author_id = cgi.escape(self.request.get('author_id'))
@@ -254,14 +282,22 @@ class PostListingHandler(webapp2.RequestHandler):
         new_listing.author_id = author_id
         author_name = cgi.escape(self.request.get('author_name'))
         if author_name=="":
-            author_name = "Taylor Thrift"
+            author_name = "cxz"
         new_listing.author_name = author_name
         new_listing.link_to_post = cgi.escape(self.request.get('link_to_post'))
         new_listing.category = cgi.escape(self.request.get('category'))
+        # img = cgi.escape(self.request.get('picture'))
+        # if not img == "":
+        #     img = images.resize(img, 200, 200)
         new_listing.picture = cgi.escape(self.request.get('picture'))
+        # avatar = self.request.get('img')
+        # avatar = self.request.get('img')
+        img = self.request.get('image_post')
+        if img!="" and img is not None:
+            new_listing.image_post = img #images.resize(img,200,200)
         new_listing.put()
         self.response.headers['Access-Control-Allow-Origin'] = '*'
-        self.response.out.write('<html><head><meta http-equiv="refresh" content="0; url=http://2.genuine-amulet-864.appspot.com/index.html" /></head><body>You wrote:<pre>')
+        self.response.out.write('<html><head><meta http-equiv="refresh" content="0; url=http://104.236.227.17/thriftshop/main.php" /></head><body>You wrote:<pre>')
         self.response.out.write("post created")
         self.response.out.write('</pre></body></html>')
 
@@ -285,12 +321,15 @@ class AllPageHandler(webapp2.RequestHandler):
                 d['author_id'] = listing.author_id
                 d['author_name'] = listing.author_name
                 d['category'] = listing.category
+                if listing.picture == "":
+                    if listing.image_post is not None and listing.image_post != "":
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
                 d['picture'] = listing.picture
                 d['date'] = str(listing.date)
                 d['link_to_post'] = listing.link_to_post
                 listings_list.append(d)
-        js = json.dumps(listings_list)
         self.response.headers['Access-Control-Allow-Origin'] = '*'
+        js = json.dumps(listings_list)
         self.response.write(js)
 
 class ItemHandler(webapp2.RequestHandler):
@@ -308,7 +347,10 @@ class ItemHandler(webapp2.RequestHandler):
                 d['author_id'] = item.author_id
                 d['author_name'] = item.author_name
                 d['category'] = item.category
-                d['picture'] = item.picture
+                if listing.picture == "":
+                    if listing.image_post is not None and listing.image_post != "":
+                        d['picture'] = str("http://2.genuine-amulet-864.appspot.com/img?img_id=") + listing.key.urlsafe()
+                d['picture'] = listing.picture
                 d['date'] = str(item.date)
                 d['link_to_post'] = item.link_to_post
                 listings_list.append(d)
@@ -342,7 +384,7 @@ class createuserHandler(webapp2.RequestHandler):
             #Generate hash
         hash_object = hashlib.md5(username)
         hash_string = hash_object.hexdigest()
-        sender_address = "sairam413@gmail.com"
+        sender_address = "GT Thrift Mobile Support<support@genuine-amulet-864.appspotmail.com>"
         subject = "GT Thrift - Password"
         res = Authenticate.query(Authenticate.username == str(username))
         body = ""
@@ -358,9 +400,10 @@ class createuserHandler(webapp2.RequestHandler):
                 first_item = item
                 break
             password = first_item.password
-            body = """Your password to login to the system is %s""" % password
+            body = """Hi\nYour password to login to the GT Thrift Mobile system is %s""" % password
         
         user_address = str(username) + str("@gatech.edu")
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         mail.send_mail(sender_address, user_address, subject, body)
 
 class authenticateHandler(webapp2.RequestHandler):
@@ -372,8 +415,8 @@ class authenticateHandler(webapp2.RequestHandler):
         for item in res:
             first_item = item
             break
-        password_db = first_item.password
         self.response.headers['Access-Control-Allow-Origin'] = '*'
+        password_db = first_item.password
         if str(password) == str(password_db):
             self.response.write(1)
         else:
@@ -409,5 +452,6 @@ app = webapp2.WSGIApplication([
     ('/postlisting/?',PostListingHandler),
     (r'/createuser/(.*)',createuserHandler),
     ('/changepassword/?',changePasswordHandler),
+    ('/img',Image),
     ('/authenticate/?',authenticateHandler)
 ], debug=True)
