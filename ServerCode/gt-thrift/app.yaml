@@ -5,6 +5,7 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+
 - url: /myface\.jpg
   static_files: thriftshop/myface.jpg
   upload: thriftshop/myface\.jpg
@@ -35,6 +36,10 @@ handlers:
   
 - url: .*
   script: main.app
+
+- url: /(.*\.php)
+  static_files: thriftshop/\1
+  upload: thriftshop/(.*\.php) 
 
 libraries:
 - name: webapp2
